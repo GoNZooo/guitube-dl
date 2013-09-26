@@ -18,13 +18,9 @@
   
   (if (null? template-list)
       output-template
-      (build-template (rest template-list)
-                      (string-append output-template
-                                     (evaluate-keyword (first template-list))))))
+      (build-template (rest template-list) (string-append output-template (evaluate-keyword (first template-list))))))
 
-(define ytdl-arguments (string-append "-o" " "
-                                      (build-template '(title "_" id
-                                                        "." extension))))
+(define ytdl-arguments (string-append "-o" " " (build-template '(title "_" id "." extension))))
 
 (define (execute-dl youtube-url)
   (define (get-extension)
@@ -36,9 +32,7 @@
     (current-directory dir-string))
 
   (define (call-youtube-dl)
-    (system (string-append ytdl-path "youtube-dl" " "
-                           ytdl-arguments " "
-                           youtube-url)))
+    (system (string-append ytdl-path "youtube-dl" " " ytdl-arguments " " youtube-url)))
   
   (make-directory* dl-dir)
   (switch-directory dl-dir)
