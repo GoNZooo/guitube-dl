@@ -16,7 +16,8 @@
   (path->complete-path (build-path (expand-user-path "~"))))
 
 (define+test (build-template template-list [output-template ""])
-  (((build-template '(title "_" id "." ext)) "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s"))
+  (((build-template '(title "_" id "." ext)) "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s")
+   ((build-template '(title " " url "." ext)) "%\\(title\\)s %\\(url\\)s.%\\(ext\\)s"))
 
   (define (evaluate-keyword keyword)
     (case keyword
