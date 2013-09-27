@@ -9,11 +9,9 @@
       "youtube-dl.exe"
       "youtube-dl"))
 
-(define ytdl-path
-  (get-default-ytdl-name))
+(define ytdl-path (get-default-ytdl-name))
 
-(define dl-dir
-  (path->complete-path (build-path (expand-user-path "~"))))
+(define dl-dir (path->complete-path (build-path (expand-user-path "~"))))
 
 (define+test (build-template template-list [output-template ""])
   (((build-template '(title "_" id "." ext)) "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s")
@@ -32,22 +30,21 @@
       output-template
       (build-template (rest template-list) (string-append output-template (evaluate-keyword (first template-list))))))
 
-(define ytdl-arguments
-  (string-append " -o " (build-template '(title "_" id "." extension)) " "))
+(define ytdl-arguments (string-append " -o " (build-template '(title "_" id "." extension)) " "))
 
-(define (execute-dl youtube-url)
+(define (download youtube-url)
   
   (define (get-extension)
     (if (equal? (system-type 'os) 'windows)
         ".exe"
         ""))
 
-  (define (call-youtube-dl)
+  (define (execute-youtube-dl)
     (system (string-append ytdl-path ytdl-arguments youtube-url)))
   
   (make-directory* dl-dir)
   (current-directory dl-dir)
-  (call-youtube-dl))
+  (execute-youtube-dl))
 
 (module+ main
-  (execute-dl "https://www.youtube.com/watch?v=It4WxQ6dnn0"))
+  (download "https://www.youtube.com/watch?v=It4WxQ6dnn0"))
