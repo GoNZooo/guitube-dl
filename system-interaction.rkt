@@ -16,7 +16,6 @@
 (define+test (build-template template-list [output-template ""])
   (((build-template '(title "_" id "." ext)) "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s")
    ((build-template '(title " " url "." ext)) "%\\(title\\)s %\\(url\\)s.%\\(ext\\)s"))
-
   (define (evaluate-keyword keyword)
     (case keyword
       [(stitle title) "%\\(title\\)s"]
@@ -33,7 +32,6 @@
 (define ytdl-arguments (string-append " -o " (build-template '(title "_" id "." extension)) " "))
 
 (define (download youtube-url)
-  
   (define (get-extension)
     (if (equal? (system-type 'os) 'windows)
         ".exe"
