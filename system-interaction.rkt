@@ -1,11 +1,22 @@
 #lang racket
 
+(require "define-test.rkt")
+
 (provide execute-dl)
 
-(define ytdl-path "")
-(define dl-dir (path->complete-path (build-path (expand-user-path "~")
+(define (get-default-ytdl-name)
+  (if (equal? (system-type 'os) 'windows)
+      "youtube-dl.exe"
+      "youtube-dl"))
 
-(define (build-template template-list [output-template ""])
+(define ytdl-path
+  (get-default-ytdl-name))
+
+(define dl-dir
+  (path->complete-path (build-path (expand-user-path "~"))))
+
+(define+test (build-template template-list [output-template ""])
+  (((build-template '(title "_" id "." ext)) "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s"))
 
   (define (evaluate-keyword keyword)
     (case keyword
@@ -20,22 +31,21 @@
       output-template
       (build-template (rest template-list) (string-append output-template (evaluate-keyword (first template-list))))))
 
-(define ytdl-arguments (string-append "-o" " " (build-template '(title "_" id "." extension))))
+(define ytdl-arguments
+  (string-append " -o " (build-template '(title "_" id "." extension)) " "))
 
 (define (execute-dl youtube-url)
+  
   (define (get-extension)
     (if (equal? (system-type 'os) 'windows)
         ".exe"
         ""))
 
-  (define (switch-directory dir-string)
-    (current-directory dir-string))
-
   (define (call-youtube-dl)
-    (system (string-append ytdl-path "youtube-dl" " " ytdl-arguments " " youtube-url)))
+    (system (string-append ytdl-path ytdl-arguments youtube-url)))
   
   (make-directory* dl-dir)
-  (switch-directory dl-dir)
+  (current-directory dl-dir)
   (call-youtube-dl))
 
 (module+ main
