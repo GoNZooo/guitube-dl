@@ -2,7 +2,7 @@
 
 (require "define-test.rkt")
 
-(provide execute-dl)
+(provide download)
 
 (define (get-default-ytdl-name)
   (if (equal? (system-type 'os) 'windows)
