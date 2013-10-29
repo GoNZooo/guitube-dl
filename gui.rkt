@@ -9,9 +9,7 @@
    [(event-type-equal? event 'button)
     (download (get-component-value url-field))]))
 
-(define top-frame
-  (new frame%
-       [label "guitube-dl"]))
+(define top-frame (new frame% [label "guitube-dl"]))
 
 (define (event-type-equal? event type)
   (equal? (send event get-event-type) type))
