@@ -14,8 +14,10 @@
 (define dl-dir (path->complete-path (build-path (expand-user-path "~"))))
 
 (define+test (build-template template-list [output-template ""])
-  (((build-template '(title "_" id "." ext)) "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s")
-   ((build-template '(title " " url "." ext)) "%\\(title\\)s %\\(url\\)s.%\\(ext\\)s"))
+  (((build-template '(title "_" id "." ext))
+    "%\\(title\\)s_%\\(id\\)s.%\\(ext\\)s")
+   ((build-template '(title " " url "." ext))
+    "%\\(title\\)s %\\(url\\)s.%\\(ext\\)s"))
   (define (evaluate-keyword keyword)
     (case keyword
       [(stitle title) "%\\(title\\)s"]
@@ -27,9 +29,15 @@
   
   (if (null? template-list)
       output-template
-      (build-template (rest template-list) (string-append output-template (evaluate-keyword (first template-list))))))
+      (build-template
+       (rest template-list)
+       (string-append output-template
+                      (evaluate-keyword (first template-list))))))
 
-(define ytdl-arguments (string-append " -o " (build-template '(title "_" id "." extension)) " "))
+(define ytdl-arguments
+  (string-append " -o "
+                 (build-template '(title "_" id "." extension))
+                 " "))
 
 (define (download youtube-url)
   (define (get-extension)
