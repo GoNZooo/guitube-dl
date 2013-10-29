@@ -4,8 +4,10 @@
 
 (define (fetch-url component event)
   (cond
-   [(event-type-equal? event 'text-field-enter) (download (get-component-value component))]
-   [(event-type-equal? event 'button) (download (get-component-value url-field))]))
+   [(event-type-equal? event 'text-field-enter)
+    (download (get-component-value component))]
+   [(event-type-equal? event 'button)
+    (download (get-component-value url-field))]))
 
 (define top-frame
   (new frame%
@@ -18,22 +20,16 @@
   (send component get-value))
 
 (define url-field
-  (new text-field%
-       [parent top-frame]
-       [label "URL:"]
-       [min-width 500]
-       [callback fetch-url]))
+  (new text-field% [parent top-frame]
+       [label "URL:"] [min-width 500] [callback fetch-url]))
 
 (define fetch-panel
-  (new horizontal-panel%
-       [parent top-frame]
+  (new horizontal-panel% [parent top-frame]
        [alignment '(center top)]))
 
 (define fetch-button
   (new button%
-       [parent fetch-panel]
-       [label "Fetch"]
-       [min-width 150]
+       [parent fetch-panel] [label "Fetch"] [min-width 150]
        [callback fetch-url]))
 
 (send top-frame show #t)
